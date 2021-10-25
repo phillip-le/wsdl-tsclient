@@ -6,6 +6,7 @@ import { changeCase } from "./utils/change-case";
 import { stripExtension } from "./utils/file";
 import { reservedKeywords } from "./utils/javascript";
 import { Logger } from "./utils/logger";
+import { inKnownTypes, mapTypes } from "./utils/map-types";
 
 interface ParserOptions {
     modelNamePreffix: string;
@@ -143,7 +144,16 @@ function parseDefinition(
                         }
                     }
                 } else {
-                    if (typeof type === "string") {
+                    if (inKnownTypes(type)) {
+                        definition.properties.push({
+                            kind: "KNOWN",
+                            name: propName,
+                            sourceName: propName,
+                            description: type,
+                            type: mapTypes(type),
+                            isArray: false,
+                        });
+                    } else if (typeof type === "string") {
                         // primitive type
                         definition.properties.push({
                             kind: "PRIMITIVE",

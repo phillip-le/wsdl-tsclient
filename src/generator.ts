@@ -79,6 +79,12 @@ function generateDefinitionFile(
         if (prop.kind === "PRIMITIVE") {
             // e.g. string
             definitionProperties.push(createProperty(prop.name, prop.type, prop.description, prop.isArray));
+        } else if (prop.kind === "KNOWN") {
+            // e.g. DateTime or number
+            if (prop.type === "DateTime") {
+                addSafeImport(definitionImports, "luxon", prop.type);
+            }
+            definitionProperties.push(createProperty(prop.name, prop.type, prop.description, prop.isArray));
         } else if (prop.kind === "REFERENCE") {
             // e.g. Items
             if (!generated.includes(prop.ref)) {

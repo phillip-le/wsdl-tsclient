@@ -11,6 +11,14 @@ export type DefinitionProperty =
           type: string;
       }
     | {
+        name: string;
+        sourceName: string;
+        description?: string;
+        kind: "KNOWN";
+        isArray?: boolean;
+        type: string;
+    }
+    | {
           name: string;
           sourceName: string;
           description?: string;
